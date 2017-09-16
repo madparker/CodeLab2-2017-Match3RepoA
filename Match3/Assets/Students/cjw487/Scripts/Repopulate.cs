@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Chrs
+﻿namespace Chrs
 {
     public class Repopulate : RepopulateScript
     {

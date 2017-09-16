@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Chrs
 {
     public class MatchManager : MatchManagerScript
     {
-        
         /// <summary>
         /// Scans the grid for matches both horizontally and veritcally.
         /// </summary>
@@ -155,16 +152,13 @@ namespace Chrs
                     //  Discard 2 collums from the right most
                     if (x < gameManager.gridWidth - 2)
                     {
-
                         //  Call "GetHorizontalMatchLength(int x, int y)";
                         //  Get the lenth of matched tokens;
                         int horizonMatchLength = GetHorizontalMatchLength(x, y);
                         
-                        
                         //  If at least 3 tokens are matching, get the number of tokens which will be removed;
                         if (horizonMatchLength > 2)
                         {
-
                             //  Destroy matched token game objects from the grid and get the number of removed tokens;
                             for (int i = x; i < x + horizonMatchLength; i++)
                             {
@@ -181,7 +175,6 @@ namespace Chrs
                                 numRemoved++;
                             }
                         }
-                       
                     }
                 }
             }
