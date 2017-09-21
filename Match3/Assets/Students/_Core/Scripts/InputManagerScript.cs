@@ -47,6 +47,8 @@ public class InputManagerScript : MonoBehaviour {
 			}
 		}
 
+		Debug.Log ("click");
+
 	}
 
     //This is a ghost function that doing nothing! haha!
