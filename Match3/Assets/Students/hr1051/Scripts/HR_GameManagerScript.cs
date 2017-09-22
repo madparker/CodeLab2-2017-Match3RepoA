@@ -54,12 +54,12 @@ namespace Hang {
 			gridArray [x, y] = token;
 
 			if (x > 1 && matchManager.GridHasHorizontalMatch (x - 2, y)) {
-				t_num++;
+				t_num = (t_num + 1) % tokenTypes.Length;
 				token.GetComponent<SpriteRenderer> ().sprite = ((GameObject)tokenTypes [t_num]).GetComponent<SpriteRenderer> ().sprite;
 			}
 
 			if (y > 1 && ((HR_MatchManagerScript)matchManager).GridHasVerticalMatch (x, y - 2)) {
-				t_num++;
+				t_num = (t_num + 1) % tokenTypes.Length;
 				token.GetComponent<SpriteRenderer> ().sprite = ((GameObject)tokenTypes [t_num]).GetComponent<SpriteRenderer> ().sprite;
 			}
 		}
