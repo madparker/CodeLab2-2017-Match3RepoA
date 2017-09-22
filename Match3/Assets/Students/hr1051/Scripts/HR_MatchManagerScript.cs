@@ -8,6 +8,9 @@ namespace Hang {
 
 		private List<Vector2> myRemoveList = new List<Vector2> ();
 
+		void Awake () {
+			gameManager = this.GetComponent<GameManagerScript> ();
+		}
 		//Check if Match and return a bool;
 		public override bool GridHasMatch(){
 
