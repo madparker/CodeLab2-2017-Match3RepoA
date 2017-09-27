@@ -20,8 +20,8 @@ namespace Hang {
 			for(int x = 0; x < gameManager.gridWidth; x++){
 				for(int y = 0; y < gameManager.gridHeight; y++){
 					//Check horizontally match and Vertical match;
-					if ((x < t_widthForMatchCheck && HR_GridHasHorizontalMatch (x, y)) ||
-					    (y < t_heightForMatchCheck && HR_GridHasVerticalMatch (x, y))) {
+					if ((x < t_widthForMatchCheck && GridHasHorizontalMatch (x, y)) ||
+					    (y < t_heightForMatchCheck && GridHasVerticalMatch (x, y))) {
 						Debug.Log ("match");
 						return true;
 					}
@@ -32,7 +32,7 @@ namespace Hang {
 		}
 
 		//Check if there are 3 matching tokens in Horizontal grid; This method is called in "GridHasMatch()";
-		public bool HR_GridHasVerticalMatch(int x, int y){
+		public bool GridHasVerticalMatch(int x, int y){
 			GameObject token1 = gameManager.gridArray[x, y + 0];
 			GameObject token2 = gameManager.gridArray[x, y + 1];
 			GameObject token3 = gameManager.gridArray[x, y + 2];
@@ -53,7 +53,7 @@ namespace Hang {
 		}
 
 		//Check if there are 3 matching tokens in Horizontal grid; This method is called in "GridHasMatch()";
-		public bool HR_GridHasHorizontalMatch(int x, int y){
+		public new bool GridHasHorizontalMatch(int x, int y){
 			GameObject token1 = gameManager.gridArray[x + 0, y];
 			GameObject token2 = gameManager.gridArray[x + 1, y];
 			GameObject token3 = gameManager.gridArray[x + 2, y];
@@ -76,7 +76,7 @@ namespace Hang {
 		//This method is called in "RemoveMatches()";
 		//Return the lenth of matched tokens;
 		//(int x, int y) indecate the left most token position in the matched tokens;
-		public int HR_GetHorizontalMatchLength(int x, int y){
+		public new int GetHorizontalMatchLength(int x, int y){
 
 			//to count the length of match
 			int matchLength = 1;
@@ -122,7 +122,7 @@ namespace Hang {
 		//This method is called in "RemoveMatches()";
 		//Return the lenth of matched tokens;
 		//(int x, int y) indecate the left most token position in the matched tokens;
-		public int HR_GetVerticalMatchLength(int x, int y){
+		public int GetVerticalMatchLength(int x, int y){
 
 			//to count the length of match
 			int matchLength = 1;
@@ -179,7 +179,7 @@ namespace Hang {
 					if (x < t_widthForMatchCheck) {
 						//Call "GetHorizontalMatchLength(int x, int y)";
 						//Get the lenth of matched tokens;
-						int horizonMatchLength = HR_GetHorizontalMatchLength (x, y);
+						int horizonMatchLength = GetHorizontalMatchLength (x, y);
 
 						//If at least 3 tokens are matching, get the number of tokens which will be removed;
 						if (horizonMatchLength > 2) {
@@ -193,7 +193,7 @@ namespace Hang {
 						}
 					}
 					if (y < t_heightForMatchCheck) {
-						int verticalMatchLength = HR_GetVerticalMatchLength (x, y);
+						int verticalMatchLength = GetVerticalMatchLength (x, y);
 
 						//If at least 3 tokens are matching, get the number of tokens which will be removed;
 						if (verticalMatchLength > 2) {

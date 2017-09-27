@@ -33,7 +33,7 @@ namespace Hang {
 		public override void Start () {
 			gridArray = new GameObject[gridWidth, gridHeight];
 			matchManager = GetComponent<MatchManagerScript>();
-			HR_MakeGrid();
+			MakeGrid();
 			inputManager = GetComponent<InputManagerScript>();
 			repopulateManager = GetComponent<RepopulateScript>();
 			moveTokenManager = GetComponent<MoveTokensScript>();
@@ -56,25 +56,26 @@ namespace Hang {
 			}
 		}
 
-		void HR_MakeGrid () {
+		void MakeGrid () {
 			grid = new GameObject ("TokenGrid");
 			//  Makes grid based on width and height variables
 			for (int x = 0; x < gridWidth; x++) {
 				for (int y = 0; y < gridHeight; y++) {
 					//  Fills in the grid with tokens
-					HR_AddTokenToPosInGrid (x, y, grid);
+					AddTokenToPosInGrid (x, y, grid);
 				}
 			}
 		}
 
-		public Vector2 GetWorldPositionFromGridPosition(int x, int y)
+		public new Vector2 GetWorldPositionFromGridPosition(int x, int y)
 		{
-			return new Vector2(
-				(x - gridWidth/2) * tokenSize,
-				(y - gridHeight/2) * tokenSize);
+			return new Vector2 (
+				(x - gridWidth / 2.0f) * tokenSize + 0.5f,
+				(y - gridHeight / 2.0f) * tokenSize + 0.5f
+			);
 		}
 
-		public void HR_AddTokenToPosInGrid(int x, int y, GameObject parent) {
+		public new void AddTokenToPosInGrid(int x, int y, GameObject parent) {
 			Vector3 position = GetWorldPositionFromGridPosition (x, y);
 
 			int t_num = Random.Range (0, myTokenColors.Length);
@@ -87,12 +88,18 @@ namespace Hang {
 			token.GetComponent<HR_Token> ().SetToken (t_num);
 			gridArray [x, y] = token;
 
-			if (x > 1 && ((HR_MatchManagerScript)matchManager).HR_GridHasHorizontalMatch (x - 2, y)) {
+			if (x > 1 && ((HR_MatchManagerScript)matchManager).GridHasHorizontalMatch (x - 2, y)) {
 				t_num = (t_num + 1) % myTokenColors.Length;
 				token.GetComponent<HR_Token> ().SetToken (t_num);
 			}
 
-			if (y > 1 && ((HR_MatchManagerScript)matchManager).HR_GridHasVerticalMatch (x, y - 2)) {
+			if (y > 1 && ((HR_MatchManagerScript)matchManager).GridHasVerticalMatch (x, y - 2)) {
+				t_num = (t_num + 1) % myTokenColors.Length;
+				token.GetComponent<HR_Token> ().SetToken (t_num);
+			}
+
+			//update: the logic is wrong, need to do the x direction check again
+			if (x > 1 && ((HR_MatchManagerScript)matchManager).GridHasHorizontalMatch (x - 2, y)) {
 				t_num = (t_num + 1) % myTokenColors.Length;
 				token.GetComponent<HR_Token> ().SetToken (t_num);
 			}

@@ -19,6 +19,7 @@ namespace Hang {
 		}
 
 		public override void Update () {
+			Debug.Log (move);
 			base.Update ();
 
 			if (isMoving) {
@@ -54,7 +55,7 @@ namespace Hang {
 					if (myMoveList.IndexOf (t_moveTarget) == -1) {
 						myMoveList.Add (t_moveTarget);
 					}
-					((HR_GameManagerScript)gameManager).HR_AddTokenToPosInGrid(x, gameManager.gridHeight - 1 - i, gameManager.grid);
+					((HR_GameManagerScript)gameManager).AddTokenToPosInGrid(x, gameManager.gridHeight - 1 - i, gameManager.grid);
 					gameManager.gridArray [x, gameManager.gridHeight - 1 - i].transform.position = 
 						gameManager.GetWorldPositionFromGridPosition (x, gameManager.gridHeight + t_emptyCount - i - 1);
 				}
@@ -89,6 +90,8 @@ namespace Hang {
 		public bool GetIsMoving () {
 			return isMoving;
 		}
+
+
 	}
 
 
