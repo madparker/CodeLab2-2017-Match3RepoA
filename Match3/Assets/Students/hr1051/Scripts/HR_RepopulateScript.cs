@@ -13,7 +13,7 @@ namespace Hang {
 				if (token == null)
 				{
 					//  Puts new tokens at the top based on x position, y position and the token's parent
-					gameManager.AddTokenToPosInGrid(x, gameManager.gridHeight - 1, gameManager.grid);
+					((HR_GameManagerScript)gameManager).AddTokenToPosInGrid(x, gameManager.gridHeight - 1, gameManager.grid);
 				}
 			}
 		}

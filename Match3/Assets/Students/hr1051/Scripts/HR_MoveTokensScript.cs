@@ -54,7 +54,7 @@ namespace Hang {
 					if (myMoveList.IndexOf (t_moveTarget) == -1) {
 						myMoveList.Add (t_moveTarget);
 					}
-					gameManager.AddTokenToPosInGrid(x, gameManager.gridHeight - 1 - i, gameManager.grid);
+					((HR_GameManagerScript)gameManager).HR_AddTokenToPosInGrid(x, gameManager.gridHeight - 1 - i, gameManager.grid);
 					gameManager.gridArray [x, gameManager.gridHeight - 1 - i].transform.position = 
 						gameManager.GetWorldPositionFromGridPosition (x, gameManager.gridHeight + t_emptyCount - i - 1);
 				}
