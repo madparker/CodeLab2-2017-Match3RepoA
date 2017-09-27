@@ -50,7 +50,7 @@ public class MatchManagerScript : MonoBehaviour {
     //This method is called in "RemoveMatches()";
     //Return the lenth of matched tokens;
     //(int x, int y) indecate the left most token position in the matched tokens;
-    public int GetHorizontalMatchLength(int x, int y){
+    public virtual int GetHorizontalMatchLength(int x, int y){
 
         //to count the length of match
 		int matchLength = 1;
