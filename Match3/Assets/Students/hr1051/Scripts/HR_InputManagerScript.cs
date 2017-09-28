@@ -26,11 +26,11 @@ namespace Hang {
 				//Get the collider of the mouse clicked point (postion);
 				Collider2D collider = Physics2D.OverlapPoint (myMouseDownPosition);
 
-				//The current selected token positon in grid;
-				mySelectTokenInGrid = gameManager.GetPositionOfTokenInGrid (collider.gameObject);
-
 				//Check if there any token;
 				if (collider != null) {
+
+					//The current selected token positon in grid;
+					mySelectTokenInGrid = gameManager.GetPositionOfTokenInGrid (collider.gameObject);
 
 					//If there is a token, get the token's game object;
 					if (selected == null) {

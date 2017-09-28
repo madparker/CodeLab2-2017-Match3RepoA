@@ -182,21 +182,42 @@ namespace Hang {
 						int horizonMatchLength = GetHorizontalMatchLength (x, y);
 
 						//If at least 3 tokens are matching, get the number of tokens which will be removed;
-						if (horizonMatchLength > 2) {
+						if (horizonMatchLength == 3) {
 
 							//Destroy matched token game objects from the grid and get the number of removed tokens;
 							for (int i = x; i < x + horizonMatchLength; i++) {
-							
 								//Get the game object of token that will be removed;
 								myRemoveList.Add (new Vector2 (i, y));
 							}
+						} else if (horizonMatchLength == 4) {
+							for (int i = 0; i < gameManager.gridWidth; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (i, y));
+							}
+						} else if (horizonMatchLength > 4) {
+							for (int i = 0; i < gameManager.gridWidth; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (i, y));
+							}
+
+							if (y > 0)
+								for (int i = 0; i < gameManager.gridWidth; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (i, y - 1));
+								}
+
+							if (y < gameManager.gridHeight - 1)
+								for (int i = 0; i < gameManager.gridWidth; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (i, y + 1));
+								}
 						}
 					}
 					if (y < t_heightForMatchCheck) {
 						int verticalMatchLength = GetVerticalMatchLength (x, y);
 
 						//If at least 3 tokens are matching, get the number of tokens which will be removed;
-						if (verticalMatchLength > 2) {
+						if (verticalMatchLength == 3) {
 
 							//Destroy matched token game objects from the grid and get the number of removed tokens;
 							for (int i = y; i < y + verticalMatchLength; i++) {
@@ -204,6 +225,28 @@ namespace Hang {
 								//Get the game object of token that will be removed;
 								myRemoveList.Add (new Vector2 (x, i));
 							}
+						} else if (verticalMatchLength == 4) {
+							for (int i = 0; i < gameManager.gridHeight; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (x, i));
+							}
+						} else if (verticalMatchLength > 4) {
+							for (int i = 0; i < gameManager.gridHeight; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (x, i));
+							}
+
+							if (x > 0)
+								for (int i = 0; i < gameManager.gridHeight; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (x - 1, i));
+								}
+
+							if (x < gameManager.gridWidth - 1)
+								for (int i = 0; i < gameManager.gridHeight; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (x + 1, i));
+								}
 						}
 					}
 				}
