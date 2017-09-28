@@ -7,7 +7,6 @@ public class AndrewMatchManager : MatchManagerScript{
 
 	public Text scoreDisplay;
 	public Text multiplierDisplay;
-	int scorePerToken;
 	int score;
 	public int comboMultiplier;
 
@@ -18,20 +17,13 @@ public class AndrewMatchManager : MatchManagerScript{
 
 	void Update ()
 	{
-		if (comboMultiplier <= 1) {
-			scorePerToken = 1;
-		} 
-		else 
-		{
-			scorePerToken = comboMultiplier;
-		}
 		scoreDisplay.text = score.ToString ();
 		string womboCombo = null;
-		if (scorePerToken <= 1) {
+		if (comboMultiplier <= 1) {
 			womboCombo = "";
 
 		} else {
-			womboCombo = "x" + scorePerToken;
+			womboCombo = "x" + comboMultiplier;
 		}
 		multiplierDisplay.text = womboCombo;
 	}
@@ -174,9 +166,12 @@ public class AndrewMatchManager : MatchManagerScript{
 
 		foreach (GameObject token in tokensToBeRemoved) 
 		{
-			Destroy (token);
 			numRemoved++;
-			score = score + scorePerToken; 
+			score = score + comboMultiplier;
+			Destroy (token);
+			GameObject beautifulNumber = Instantiate(Resources.Load("ajp678_resources/Prefabs/BeautifulNumber")) as GameObject;
+			beautifulNumber.GetComponent<BeautifulNumbers> ().displayNum = comboMultiplier; 
+			beautifulNumber.transform.position = token.transform.position;
 		}
 
 		for (int i = 0; i < gridPosToNull.Count; i++) 

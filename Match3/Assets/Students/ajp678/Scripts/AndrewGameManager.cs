@@ -19,7 +19,7 @@ public class AndrewGameManager : GameManagerScript {
 			else
 			{
 				inputManager.SelectToken();
-				GetComponent<AndrewMatchManager>().comboMultiplier = 0;
+				GetComponent<AndrewMatchManager>().comboMultiplier = 1;
 			}
 		}
 		else
