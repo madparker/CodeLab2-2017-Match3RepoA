@@ -27,7 +27,7 @@ public class MatchManagerScript : MonoBehaviour {
 	}
 
     //Check if there are 3 matching tokens in Horizontal grid; This method is called in "GridHasMatch()";
-    public bool GridHasHorizontalMatch(int x, int y){
+    public virtual bool GridHasHorizontalMatch(int x, int y){
 		GameObject token1 = gameManager.gridArray[x + 0, y];
 		GameObject token2 = gameManager.gridArray[x + 1, y];
 		GameObject token3 = gameManager.gridArray[x + 2, y];
