@@ -57,7 +57,7 @@ public class GameManagerScript : MonoBehaviour {
     /// <summary>
     /// Makes grid based on height and width variables
     /// </summary>
-	void MakeGrid()
+	protected void MakeGrid()
     {
 		grid = new GameObject("TokenGrid");
         //  Makes grid based on width and height variables
@@ -119,7 +119,7 @@ public class GameManagerScript : MonoBehaviour {
     /// <param name="x">X Position</param>
     /// <param name="y">Y Position</param>
     /// <returns> A Vector2 with the grid position width and height in world space</returns>
-	public Vector2 GetWorldPositionFromGridPosition(int x, int y)
+	public virtual Vector2 GetWorldPositionFromGridPosition(int x, int y)
     {
 		return new Vector2(
 			(x - gridWidth/2) * tokenSize,
