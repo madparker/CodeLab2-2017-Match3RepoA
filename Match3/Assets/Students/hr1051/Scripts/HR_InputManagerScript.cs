@@ -79,7 +79,7 @@ namespace Hang {
 								true
 							);
 								
-							Debug.Log (selected.name + " " + mySelectTokenInGrid + "-" + t_targetGameObject.name + " " + (mySelectTokenInGrid + Vector2.right));
+//							Debug.Log (selected.name + " " + mySelectTokenInGrid + "-" + t_targetGameObject.name + " " + (mySelectTokenInGrid + Vector2.right));
 						} else if (t_mouseMove.x < 0 && mySelectTokenInGrid.x > 0) {
 							//swap left//get target game object
 							t_targetGameObject = gameManager.gridArray[(int)mySelectTokenInGrid.x - 1, (int)mySelectTokenInGrid.y];

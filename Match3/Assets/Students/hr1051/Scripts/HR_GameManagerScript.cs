@@ -10,6 +10,11 @@ namespace Hang {
 		public Sprite[] myTokenTexture;
 		public SpriteRenderer myBackSpriteRenderer;
 
+		private int myScore = 0;
+		[SerializeField] UnityEngine.UI.Text myScoreDisplay;
+
+		private float myTimer;
+
 		private static HR_GameManagerScript instance = null;
 
 		//========================================================================
@@ -39,6 +44,9 @@ namespace Hang {
 			moveTokenManager = GetComponent<MoveTokensScript>();
 
 			myBackSpriteRenderer.size = new Vector2 (gridWidth + 0.2f, gridHeight + 0.2f);
+
+			myScore = 0;
+			myScoreDisplay.text = "0";
 		}
 
 		public override void Update () {
@@ -103,6 +111,11 @@ namespace Hang {
 				t_num = (t_num + 1) % myTokenColors.Length;
 				token.GetComponent<HR_Token> ().SetToken (t_num);
 			}
+		}
+
+		public void AddScore (int g_score) {
+			myScore += g_score;
+			myScoreDisplay.text = myScore.ToString ("#");
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Hang;
+using Hang.PoppingParticlePool;
 
 namespace Hang {
 	public class HR_MatchManagerScript : MatchManagerScript {
@@ -22,7 +23,7 @@ namespace Hang {
 					//Check horizontally match and Vertical match;
 					if ((x < t_widthForMatchCheck && GridHasHorizontalMatch (x, y)) ||
 					    (y < t_heightForMatchCheck && GridHasVerticalMatch (x, y))) {
-						Debug.Log ("match");
+//						Debug.Log ("match");
 						return true;
 					}
 				}
@@ -258,6 +259,11 @@ namespace Hang {
 				if (!token)
 					continue;
 
+				//create particle
+				ParticleSystem t_particleSystem = PoppingParticlePoolManager.Instance.GetFromPool (ParticleType.Match);
+				ParticleActions.SetFromColor (t_particleSystem, token.GetComponent<SpriteRenderer> ().color);
+				ParticleActions.PlayParticle (t_particleSystem, token.transform.position);
+
 				//Destory the game ojbect;
 				Destroy(token);
 
@@ -268,9 +274,12 @@ namespace Hang {
 				numRemoved++;
 			}
 
+			//add score
+			HR_GameManagerScript.Instance.AddScore (numRemoved);
+
 			myRemoveList.Clear ();
 
-			Debug.Log (numRemoved);
+//			Debug.Log (numRemoved);
 			//Return the number of tokens which will be removed;
 			return numRemoved;
 		}
