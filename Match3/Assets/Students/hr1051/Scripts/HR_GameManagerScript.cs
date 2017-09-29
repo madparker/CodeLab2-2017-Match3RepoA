@@ -81,7 +81,8 @@ namespace Hang {
 		}
 
 		new void MakeGrid () {
-			grid = new GameObject ("TokenGrid");
+			if (grid == null)
+				grid = new GameObject ("TokenGrid");
 			//  Makes grid based on width and height variables
 			for (int x = 0; x < gridWidth; x++) {
 				for (int y = 0; y < gridHeight; y++) {
@@ -151,10 +152,12 @@ namespace Hang {
 		}
 
 		public void RegenerateGrid () {
-			foreach (GameObject t_token in gridArray) {
-				Destroy (t_token);
+			for (int x = 0; x < gridWidth; x++) {
+				for (int y = 0; y < gridHeight; y++) {
+					Destroy (gridArray [x, y]);
+					gridArray [x, y] = null;
+				}
 			}
-
 			MakeGrid ();
 		}
 	}

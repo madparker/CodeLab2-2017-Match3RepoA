@@ -89,6 +89,7 @@ namespace Hang {
 
 		public void StartMoving () {
 			isMoving = true;
+			myMoveCurrentSpeed = myMoveStartSpeed;
 			for (int x = 0; x < gameManager.gridWidth; x++) {
 				for (int y = 0; y < gameManager.gridHeight; y++) {
 					myMoveList.Add (new Vector2 (x, y));
