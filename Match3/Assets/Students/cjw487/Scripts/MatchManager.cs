@@ -4,6 +4,11 @@ namespace Chrs
 {
     public class MatchManager : MatchManagerScript
     {
+
+        public override void Start()
+        {
+            base.Start();
+        }
         /// <summary>
         /// Scans the grid for matches both horizontally and veritcally.
         /// </summary>
@@ -11,21 +16,48 @@ namespace Chrs
         public override bool GridHasMatch()
         {
             bool hasMatch = false;
-            for (int x = 0; x < gameManager.gridWidth; x++)
+            for (int x = 0; x < Services.GameManager.gridWidth; x++)
             {
-                for (int y = 0; y < gameManager.gridHeight; y++)
+                for (int y = 0; y < Services.GameManager.gridHeight; y++)
                 {
-                    if (x < gameManager.gridWidth - 2)
+                    if (x < Services.GameManager.gridWidth - 2)
                     {
                         //  Check for matches for horizontal matches
                         hasMatch = hasMatch || GridHasHorizontalMatch(x, y);
                     }
 
                     //  Check verical matches
-                    hasMatch = hasMatch || GridHasVerticalMatch(x, y);
+                    if (y < Services.GameManager.gridHeight - 2)
+                    {
+                        hasMatch = hasMatch || GridHasVerticalMatch(x, y);
+                    }
                 }
             }
             return hasMatch;
+        }
+
+        public override bool GridHasHorizontalMatch(int x, int y)
+        {
+            GameObject token1 = Services.GameManager.gridArray[x + 0, y];
+            GameObject token2 = Services.GameManager.gridArray[x + 1, y];
+            GameObject token3 = Services.GameManager.gridArray[x + 2, y];
+
+            //Check the token sprite exist;
+            if (token1 != null && token2 != null && token3 != null)
+            {
+                //Get "Sprite Renderer" from each token;
+                SpriteRenderer sr1 = token1.GetComponent<SpriteRenderer>();
+                SpriteRenderer sr2 = token2.GetComponent<SpriteRenderer>();
+                SpriteRenderer sr3 = token3.GetComponent<SpriteRenderer>();
+
+                //Check are these 3 sprite (token using this sprite) are matching;
+                return (sr1.color == sr2.color && sr2.color == sr3.color);
+            }
+            else
+            {
+                //if not, return false;
+                return false;
+            }
         }
 
         /// <summary>
@@ -36,35 +68,25 @@ namespace Chrs
         /// <returns>True if 3 tokens has the same sprite</returns>
         public bool GridHasVerticalMatch(int x, int y)
         {
-            int top = y + 1;
-            int mid = y;
-            int low = y - 1;
 
-            //  If the index you're checking is out of bounds,
-            //  we do not have a vertical match
-            if(low < 0 || top > gameManager.gridHeight - 1)
-            {
-                return false;
-            }
+            GameObject token1 = Services.GameManager.gridArray[x, y + 0];
+            GameObject token2 = Services.GameManager.gridArray[x, y + 1];
+            GameObject token3 = Services.GameManager.gridArray[x, y + 2];
 
-            GameObject token1 = gameManager.gridArray[x, top];
-            GameObject token2 = gameManager.gridArray[x, mid];
-            GameObject token3 = gameManager.gridArray[x, low];
-
-            //  Check the token sprite exists
+            //Check the token sprite exist;
             if (token1 != null && token2 != null && token3 != null)
             {
-                //  Get "Sprite Renderer" from each token;
+                //Get "Sprite Renderer" from each token;
                 SpriteRenderer sr1 = token1.GetComponent<SpriteRenderer>();
                 SpriteRenderer sr2 = token2.GetComponent<SpriteRenderer>();
                 SpriteRenderer sr3 = token3.GetComponent<SpriteRenderer>();
 
-                //  Use transitive property to compare all the sprites
-                return (sr1.sprite == sr2.sprite && sr2.sprite == sr3.sprite);
+                //Check are these 3 sprite (token using this sprite) are matching;
+                return (sr1.color == sr2.color && sr2.color == sr3.color);
             }
             else
             {
-                //  If one token is null, we do not have a vertical match
+                //if not, return false;
                 return false;
             }
         }
@@ -81,16 +103,16 @@ namespace Chrs
             int matchLength = 1;
 
             //  Stores the first element of the match
-            GameObject first = gameManager.gridArray[x, y];
+            GameObject first = Services.GameManager.gridArray[x, y];
 
             if (first != null)
             {
                 SpriteRenderer sr1 = first.GetComponent<SpriteRenderer>();
                 
-                for (int i = y + 1; i < gameManager.gridWidth; i++)
+                for (int i = y + 1; i < Services.GameManager.gridWidth; i++)
                 {
                     //  Gets other token to compare the first token to
-                    GameObject other = gameManager.gridArray[x, i];
+                    GameObject other = Services.GameManager.gridArray[x, i];
 
                     //  If the other token is not null, do the comparison
                     if (other != null)
@@ -128,9 +150,9 @@ namespace Chrs
             int numRemoved = 0;
 
             //  Go through all the grid to check the matched tokens
-            for (int x = 0; x < gameManager.gridWidth; x++)
+            for (int x = 0; x < Services.GameManager.gridWidth; x++)
             {
-                for (int y = 0; y < gameManager.gridHeight; y++)
+                for (int y = 0; y < Services.GameManager.gridHeight; y++)
                 {
                     
                     int verticalMatchLength = GetVerticalMatchLength(x, y);
@@ -141,16 +163,16 @@ namespace Chrs
                     {
                         for (int i = y; i < y + verticalMatchLength; i++)
                         {
-                            GameObject token = gameManager.gridArray[x, i];
+                            GameObject token = Services.GameManager.gridArray[x, i];
                             Destroy(token);
-                            gameManager.gridArray[x, i] = null;
+                            Services.GameManager.gridArray[x, i] = null;
 
                             numRemoved++;
                         }
                     }
 
                     //  Discard 2 collums from the right most
-                    if (x < gameManager.gridWidth - 2)
+                    if (x < Services.GameManager.gridWidth - 2)
                     {
                         //  Call "GetHorizontalMatchLength(int x, int y)";
                         //  Get the lenth of matched tokens;
@@ -163,13 +185,13 @@ namespace Chrs
                             for (int i = x; i < x + horizonMatchLength; i++)
                             {
                                 //  Get the game object of token that will be removed;
-                                GameObject token = gameManager.gridArray[i, y];
+                                GameObject token = Services.GameManager.gridArray[i, y];
 
                                 //  Destory the game ojbect;
                                 Destroy(token);
 
                                 //  Reset the grid to null;
-                                gameManager.gridArray[i, y] = null;
+                                Services.GameManager.gridArray[i, y] = null;
 
                                 //  Increase the number of removed tokens;
                                 numRemoved++;
