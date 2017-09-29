@@ -179,7 +179,7 @@ public class AndrewMatchManager : MatchManagerScript{
 			GameObject beautifulNumber = Instantiate(Resources.Load("ajp678_resources/Prefabs/BeautifulNumber")) as GameObject;//Spawn the beautiful number effect.
 			beautifulNumber.GetComponent<BeautifulNumbers> ().displayNum = comboMultiplier; 
 			beautifulNumber.transform.position = token.transform.position;
-			GetComponent<AudioSource> ().PlayOneShot (airhorn);//play airhorn.
+			GetComponent<AudioSource> ().PlayOneShot (airhorn);//play airhorn.  
 		}
 
 		for (int i = 0; i < gridPosToNull.Count; i++) 
