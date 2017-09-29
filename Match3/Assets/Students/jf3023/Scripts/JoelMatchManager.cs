@@ -1,11 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using joel;
 
 public class JoelMatchManager : MatchManagerScript {
 
+    private ScoreManager scoreManager;
 
-	
+    public override void Start()
+    {
+        base.Start();
+        scoreManager = GetComponent<ScoreManager>();
+
+    }
+
     public override bool GridHasMatch()
     {
         bool match = false;
@@ -94,7 +102,7 @@ public class JoelMatchManager : MatchManagerScript {
     public override int RemoveMatches()
     {
         int numRemoved = 0;
-        List<GameObject> tokens = new List<GameObject>();
+        List<TokenScript> tokens = new List<TokenScript>();
         List<Vector2> gridPositions = new List<Vector2>();
 
         for (int x = 0; x < gameManager.gridWidth; x++)
@@ -115,11 +123,13 @@ public class JoelMatchManager : MatchManagerScript {
                         for (int i = x; i < x + horizonMatchLength; i++)
                         {
        
-                            GameObject token = gameManager.gridArray[i, y];
+                            TokenScript token = gameManager.gridArray[i, y].GetComponent<TokenScript>();
 
 
                             if (!tokens.Contains(token)) { 
-                                    tokens.Add(token);
+                                tokens.Add(token);
+                                token.isInHorizontalMatch = true;
+                                token.horizontalMatchLength = horizonMatchLength;
                             }
 
                             Vector2 gridPos = new Vector2(i, y);
@@ -141,11 +151,21 @@ public class JoelMatchManager : MatchManagerScript {
                     {
                         for(int i = y; i < y + verticalMatchLength; i++)
                         {
-                            GameObject token = gameManager.gridArray[x, i];
+                            TokenScript token = gameManager.gridArray[x, i].GetComponent<TokenScript>();
                         
                             if (!tokens.Contains(token))
                             {
                                 tokens.Add(token);
+                                token.isInVerticalMatch = true;
+                                token.verticalMatchLength = verticalMatchLength;
+                            }
+
+                            if (tokens.Contains(token) && token.isInHorizontalMatch)
+                            {
+                                Debug.Log("Hit");
+
+                                token.isInVerticalMatch = true;
+                                token.verticalMatchLength = verticalMatchLength;
                             }
 
 
@@ -162,15 +182,26 @@ public class JoelMatchManager : MatchManagerScript {
             }
         }
 
-        foreach(GameObject token in tokens)
+        foreach(TokenScript token in tokens)
         {
-            Destroy(token);
-            numRemoved++;
+            scoreManager.Score += token.PointsToAdd();
+            if(token.isInHorizontalMatch && token.isInVerticalMatch)
+            {
+                token.onFire = true;
+                token.isInHorizontalMatch = false;
+                token.isInVerticalMatch = false;
+            }
+            else
+            {
+                Destroy(token.gameObject);
+                numRemoved++;
+                gameManager.gridArray[(int)gameManager.GetPositionOfTokenInGrid(token.gameObject).x, (int)gameManager.GetPositionOfTokenInGrid(token.gameObject).y] = null;
+            }    
         }
 
         for(int i = 0; i < gridPositions.Count; i++)
         {
-            gameManager.gridArray[(int)gridPositions[i].x, (int)gridPositions[i].y] = null;
+           // gameManager.gridArray[(int)gridPositions[i].x, (int)gridPositions[i].y] = null;
         }
 
         tokens.Clear();
