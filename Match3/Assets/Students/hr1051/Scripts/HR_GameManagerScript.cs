@@ -152,6 +152,8 @@ namespace Hang {
 		}
 
 		public void RegenerateGrid () {
+			if (GetIsEnd ())
+				return;
 			for (int x = 0; x < gridWidth; x++) {
 				for (int y = 0; y < gridHeight; y++) {
 					Destroy (gridArray [x, y]);
