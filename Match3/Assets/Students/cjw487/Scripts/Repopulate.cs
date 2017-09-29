@@ -11,15 +11,17 @@ namespace Chrs
 
         public override void AddNewTokensToRepopulateGrid()
         {
-            for (int x = 0; x < gameManager.gridWidth; x++)
+            for (int x = 0; x < Services.GameManager.gridWidth; x++)
             {
                 //  Gets a tokens at the top of the grid to fill in empty spaces
-                GameObject token = gameManager.gridArray[x, gameManager.gridHeight - 1];
+                GameObject token = Services.GameManager.gridArray[x, Services.GameManager.gridHeight - 1];
                 //  This happens when a match has been made and tokens in the grid fall down
                 if (token == null)
                 {
                     //  Puts new tokens at the top based on x position, y position and the token's parent
-                    gameManager.AddTokenToPosInGrid(x, gameManager.gridHeight - 1, gameManager.grid);
+                    ((GameManager)Services.GameManager).AddTokenToPosInGrid_cjw(   x, 
+                                                              Services.GameManager.gridHeight - 1, 
+                                                                Services.GameManager.grid);
                 }
             }
         }
