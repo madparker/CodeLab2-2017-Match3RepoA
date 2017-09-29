@@ -8,12 +8,13 @@ namespace Hang {
 		public GameObject myTokenPrefab;
 		public Color[] myTokenColors;
 		public Sprite[] myTokenTexture;
+
 		public SpriteRenderer myBackSpriteRenderer;
 
 		private int myScore = 0;
-		[SerializeField] UnityEngine.UI.Text myScoreDisplay;
 
-		private float myTimer;
+		[SerializeField] float myGameTime = 60;
+		private float myGameTimer;
 
 		private static HR_GameManagerScript instance = null;
 
@@ -45,11 +46,23 @@ namespace Hang {
 
 			myBackSpriteRenderer.size = new Vector2 (gridWidth + 0.2f, gridHeight + 0.2f);
 
+			HR_UI_Play.Instance.InitTimeBar (-gridHeight / 2.0f - 0.6f);
+
 			myScore = 0;
-			myScoreDisplay.text = "0";
+
+			myGameTimer = myGameTime;
 		}
 
 		public override void Update () {
+			if (myGameTimer > 0) {
+				myGameTimer -= Time.deltaTime;
+				if (myGameTimer <= 0) {
+					myGameTimer = 0;
+				}
+
+				HR_UI_Play.Instance.ShowTimer (myGameTimer / myGameTime);
+			}
+
 			if (((HR_MoveTokensScript)(moveTokenManager)).GetIsMoving ())
 				return;
 			
@@ -57,6 +70,8 @@ namespace Hang {
 				if (matchManager.GridHasMatch ()) {
 					matchManager.RemoveMatches ();
 				} else {
+					if (GetIsEnd ())
+						return;
 					inputManager.SelectToken ();
 				}
 			} else {
@@ -75,7 +90,7 @@ namespace Hang {
 			}
 		}
 
-		public new Vector2 GetWorldPositionFromGridPosition(int x, int y)
+		public override Vector2 GetWorldPositionFromGridPosition(int x, int y)
 		{
 			return new Vector2 (
 				(x - gridWidth / 2.0f) * tokenSize + 0.5f,
@@ -115,7 +130,13 @@ namespace Hang {
 
 		public void AddScore (int g_score) {
 			myScore += g_score;
-			myScoreDisplay.text = myScore.ToString ("#");
+			HR_UI_Play.Instance.ShowScore (myScore);
+		}
+
+		public bool GetIsEnd () {
+			if (myGameTimer == 0)
+				return true;
+			return false;
 		}
 	}
 }

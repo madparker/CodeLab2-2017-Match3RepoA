@@ -45,7 +45,7 @@ namespace Hang {
 						if (Mathf.Abs (pos1.x - pos2.x) + Mathf.Abs (pos1.y - pos2.y) == 1) {
 							//If the distance is 1, do the position swap;
 							moveManager.SetupTokenExchange (selected, pos1, collider.gameObject, pos2, true);
-							Debug.Log (selected.name + " " + pos1 + "-" + collider.gameObject.name + " " + pos2);
+//							Debug.Log (selected.name + " " + pos1 + "-" + collider.gameObject.name + " " + pos2);
 
 							//Clear the "selected" to null;
 							selected = null;
