@@ -11,13 +11,19 @@ public class AndrewMatchManager : MatchManagerScript{
 	public int comboMultiplier;
 	public AudioClip airhorn;
 
-	public override void Start()
+	public override void Start ()
 	{
-		base.Start ();
+		Debug.Log (":)");
+	}
+
+	public void setGM()
+	{
+		gameManager = GetComponent<GameManagerScript> ();
 	}
 
 	void Update ()
 	{
+		//Ui displays correctly.
 		scoreDisplay.text = score.ToString ();
 		string womboCombo = null;
 		if (comboMultiplier <= 1) {
@@ -105,7 +111,7 @@ public class AndrewMatchManager : MatchManagerScript{
 
 	public override int RemoveMatches ()
 	{
-		//Lists of tokens to be removed and thier spaces in the grid that will have to be null'd
+		//Lists of tokens to be removed and thier spaces in the grid that will have to be null'd. 
 		List<GameObject> tokensToBeRemoved = new List<GameObject> ();
 		List<Vector2> gridPosToNull = new List<Vector2> ();
 
@@ -168,20 +174,20 @@ public class AndrewMatchManager : MatchManagerScript{
 		foreach (GameObject token in tokensToBeRemoved) 
 		{
 			numRemoved++;
-			score = score + comboMultiplier;
-			Destroy (token);
-			GameObject beautifulNumber = Instantiate(Resources.Load("ajp678_resources/Prefabs/BeautifulNumber")) as GameObject;
+			score = score + comboMultiplier; //Increase score accoring to currently multiplier.
+			Destroy (token);// Destroy the token.
+			GameObject beautifulNumber = Instantiate(Resources.Load("ajp678_resources/Prefabs/BeautifulNumber")) as GameObject;//Spawn the beautiful number effect.
 			beautifulNumber.GetComponent<BeautifulNumbers> ().displayNum = comboMultiplier; 
 			beautifulNumber.transform.position = token.transform.position;
-//			GetComponent<AudioSource> ().PlayOneShot (airhorn);
+			GetComponent<AudioSource> ().PlayOneShot (airhorn);//play airhorn.
 		}
 
 		for (int i = 0; i < gridPosToNull.Count; i++) 
 		{
-			gameManager.gridArray[(int)gridPosToNull[i].x, (int)gridPosToNull[i].y] = null;
+			gameManager.gridArray[(int)gridPosToNull[i].x, (int)gridPosToNull[i].y] = null; // null out the spaces on the grid.
 		}
 
-		tokensToBeRemoved.Clear ();
+		tokensToBeRemoved.Clear (); // clear the lists.
 		gridPosToNull.Clear ();
 
 		//Return the number of tokens which will be removed;
