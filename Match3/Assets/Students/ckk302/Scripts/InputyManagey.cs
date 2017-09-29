@@ -5,6 +5,11 @@ using UnityEngine;
 namespace kitkat { 
 public class InputyManagey : InputManagerScript {
 
+        public Color selectedColour;
+        public Color normalColour;
+
+        private SpriteRenderer clickySR;
+
         public override void SelectToken()
         {
             //On mouse left button clikced to select a token;
@@ -16,6 +21,8 @@ public class InputyManagey : InputManagerScript {
                 //Get the collider of the mouse clicked point (postion);
                 Collider2D collider = Physics2D.OverlapPoint(mousePos);
 
+                
+
                 //Check if there any token;
                 if (collider != null)
                 {
@@ -25,6 +32,9 @@ public class InputyManagey : InputManagerScript {
                     {
                         //If the first selected token is empty, "selected" stores the current tokan game object;
                         selected = collider.gameObject;
+
+                        clickySR = selected.GetComponent<SpriteRenderer>();
+                        clickySR.color = selectedColour;
                     }
                     else
                     {
@@ -45,6 +55,7 @@ public class InputyManagey : InputManagerScript {
                         }
 
                         //Clear the "selected" to null;
+                        clickySR.color = normalColour;
                         selected = null;
                     }
                 }

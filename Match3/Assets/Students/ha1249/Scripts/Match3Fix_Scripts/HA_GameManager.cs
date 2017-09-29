@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class HA_GameManager : GameManagerScript {
 
-
-	public override void Start (){
+	public override void Start ()
+	{
 		base.Start ();
 	}
 
-	public override bool GridHasEmpty (){
+	public override bool GridHasEmpty ()
+	{
 		return base.GridHasEmpty ();
 	}
 
-	public override void Update (){
+	public override void Update ()
+	{
 		base.Update ();
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Hang;
+using Hang.PoppingParticlePool;
 
 namespace Hang {
 	public class HR_MatchManagerScript : MatchManagerScript {
@@ -22,7 +23,7 @@ namespace Hang {
 					//Check horizontally match and Vertical match;
 					if ((x < t_widthForMatchCheck && GridHasHorizontalMatch (x, y)) ||
 					    (y < t_heightForMatchCheck && GridHasVerticalMatch (x, y))) {
-						Debug.Log ("match");
+//						Debug.Log ("match");
 						return true;
 					}
 				}
@@ -45,11 +46,78 @@ namespace Hang {
 				SpriteRenderer sr3 = token3.GetComponent<SpriteRenderer>();
 
 				//Check are these 3 sprite (token using this sprite) are matching;
-				return (sr1.sprite == sr2.sprite && sr2.sprite == sr3.sprite);
+				return (sr1.color == sr2.color && sr2.color == sr3.color);
 			} else {
 				//if not, return false;
 				return false;
 			}
+		}
+
+		//Check if there are 3 matching tokens in Horizontal grid; This method is called in "GridHasMatch()";
+		public new bool GridHasHorizontalMatch(int x, int y){
+			GameObject token1 = gameManager.gridArray[x + 0, y];
+			GameObject token2 = gameManager.gridArray[x + 1, y];
+			GameObject token3 = gameManager.gridArray[x + 2, y];
+
+			//Check the token sprite exist;
+			if (token1 != null && token2 != null && token3 != null) {
+				//Get "Sprite Renderer" from each token;
+				SpriteRenderer sr1 = token1.GetComponent<SpriteRenderer>();
+				SpriteRenderer sr2 = token2.GetComponent<SpriteRenderer>();
+				SpriteRenderer sr3 = token3.GetComponent<SpriteRenderer>();
+
+				//Check are these 3 sprite (token using this sprite) are matching;
+				return (sr1.color == sr2.color && sr2.color == sr3.color);
+			} else {
+				//if not, return false;
+				return false;
+			}
+		}
+
+		//This method is called in "RemoveMatches()";
+		//Return the lenth of matched tokens;
+		//(int x, int y) indecate the left most token position in the matched tokens;
+		public new int GetHorizontalMatchLength(int x, int y){
+
+			//to count the length of match
+			int matchLength = 1;
+
+			//store the left most token's game object;
+			GameObject first = gameManager.gridArray[x, y];
+
+			//Check the left most token is existed;
+			if(first != null){
+				SpriteRenderer sr1 = first.GetComponent<SpriteRenderer>();
+
+				//Check the other tokens at right side are match and get the lenth of the matched tokens;
+				for(int i = x + 1; i < gameManager.gridWidth; i++){
+					//get the game object from this grid
+					GameObject other = gameManager.gridArray[i, y];
+
+					//check if the game object exists;
+					if(other != null){
+
+						//get the sprite renderer from the game object;
+						SpriteRenderer sr2 = other.GetComponent<SpriteRenderer>();
+
+						//check if the sprite is the same as the left most token's sprite;
+						if(sr1.color == sr2.color){
+
+							//increase the count for match;
+							matchLength++;
+						} else {
+							//if the sprite is different, end the for loop;
+							break;
+						}
+					} else {
+						//if the game object dosen't exist, end the for loop;
+						break;
+					}
+				}
+			}
+
+			//Return the lenth of matched tokens as int;
+			return matchLength;
 		}
 
 		//This method is called in "RemoveMatches()";
@@ -79,7 +147,7 @@ namespace Hang {
 						SpriteRenderer sr2 = other.GetComponent<SpriteRenderer>();
 
 						//check if the sprite is the same as the left most token's sprite;
-						if(sr1.sprite == sr2.sprite){
+						if(sr1.color == sr2.color){
 
 							//increase the count for match;
 							matchLength++;
@@ -115,21 +183,42 @@ namespace Hang {
 						int horizonMatchLength = GetHorizontalMatchLength (x, y);
 
 						//If at least 3 tokens are matching, get the number of tokens which will be removed;
-						if (horizonMatchLength > 2) {
+						if (horizonMatchLength == 3) {
 
 							//Destroy matched token game objects from the grid and get the number of removed tokens;
 							for (int i = x; i < x + horizonMatchLength; i++) {
-							
 								//Get the game object of token that will be removed;
 								myRemoveList.Add (new Vector2 (i, y));
 							}
+						} else if (horizonMatchLength == 4) {
+							for (int i = 0; i < gameManager.gridWidth; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (i, y));
+							}
+						} else if (horizonMatchLength > 4) {
+							for (int i = 0; i < gameManager.gridWidth; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (i, y));
+							}
+
+							if (y > 0)
+								for (int i = 0; i < gameManager.gridWidth; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (i, y - 1));
+								}
+
+							if (y < gameManager.gridHeight - 1)
+								for (int i = 0; i < gameManager.gridWidth; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (i, y + 1));
+								}
 						}
 					}
 					if (y < t_heightForMatchCheck) {
 						int verticalMatchLength = GetVerticalMatchLength (x, y);
 
 						//If at least 3 tokens are matching, get the number of tokens which will be removed;
-						if (verticalMatchLength > 2) {
+						if (verticalMatchLength == 3) {
 
 							//Destroy matched token game objects from the grid and get the number of removed tokens;
 							for (int i = y; i < y + verticalMatchLength; i++) {
@@ -137,6 +226,28 @@ namespace Hang {
 								//Get the game object of token that will be removed;
 								myRemoveList.Add (new Vector2 (x, i));
 							}
+						} else if (verticalMatchLength == 4) {
+							for (int i = 0; i < gameManager.gridHeight; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (x, i));
+							}
+						} else if (verticalMatchLength > 4) {
+							for (int i = 0; i < gameManager.gridHeight; i++) {
+								//Get the game object of token that will be removed;
+								myRemoveList.Add (new Vector2 (x, i));
+							}
+
+							if (x > 0)
+								for (int i = 0; i < gameManager.gridHeight; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (x - 1, i));
+								}
+
+							if (x < gameManager.gridWidth - 1)
+								for (int i = 0; i < gameManager.gridHeight; i++) {
+									//Get the game object of token that will be removed;
+									myRemoveList.Add (new Vector2 (x + 1, i));
+								}
 						}
 					}
 				}
@@ -148,6 +259,11 @@ namespace Hang {
 				if (!token)
 					continue;
 
+				//create particle
+				ParticleSystem t_particleSystem = PoppingParticlePoolManager.Instance.GetFromPool (ParticleType.Match);
+				ParticleActions.SetFromColor (t_particleSystem, token.GetComponent<SpriteRenderer> ().color);
+				ParticleActions.PlayParticle (t_particleSystem, token.transform.position);
+
 				//Destory the game ojbect;
 				Destroy(token);
 
@@ -158,9 +274,12 @@ namespace Hang {
 				numRemoved++;
 			}
 
+			//add score
+			HR_GameManagerScript.Instance.AddScore (numRemoved);
+
 			myRemoveList.Clear ();
 
-			Debug.Log (numRemoved);
+//			Debug.Log (numRemoved);
 			//Return the number of tokens which will be removed;
 			return numRemoved;
 		}

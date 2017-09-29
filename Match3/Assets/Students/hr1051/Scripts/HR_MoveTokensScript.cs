@@ -19,6 +19,7 @@ namespace Hang {
 		}
 
 		public override void Update () {
+//			Debug.Log (move);
 			base.Update ();
 
 			if (isMoving) {
@@ -44,7 +45,7 @@ namespace Hang {
 						t_newPosY += 1;
 					}
 
-					Debug.Log (t_newPosY);
+//					Debug.Log (t_newPosY);
 				}
 
 				int t_emptyCount = gameManager.gridHeight - t_newPosY;
@@ -54,9 +55,9 @@ namespace Hang {
 					if (myMoveList.IndexOf (t_moveTarget) == -1) {
 						myMoveList.Add (t_moveTarget);
 					}
-					gameManager.AddTokenToPosInGrid(x, gameManager.gridHeight - 1 - i, gameManager.grid);
+					((HR_GameManagerScript)gameManager).AddTokenToPosInGrid(x, gameManager.gridHeight - 1 - i, gameManager.grid);
 					gameManager.gridArray [x, gameManager.gridHeight - 1 - i].transform.position = 
-						gameManager.GetWorldPositionFromGridPosition (x, gameManager.gridHeight + t_emptyCount - i - 1);
+						((HR_GameManagerScript)gameManager).GetWorldPositionFromGridPosition (x, gameManager.gridHeight + t_emptyCount - i - 1);
 				}
 			}
 			return true;
@@ -70,9 +71,9 @@ namespace Hang {
 					int t_y = (int)myMoveList [i].y;
 					Transform t_targetTransform = gameManager.gridArray [t_x, t_y].transform;
 					t_targetTransform.position += Vector3.down * myMoveCurrentSpeed * Time.deltaTime;
-					if (t_targetTransform.position.y < gameManager.GetWorldPositionFromGridPosition (t_x, t_y).y) {
+					if (t_targetTransform.position.y < ((HR_GameManagerScript)gameManager).GetWorldPositionFromGridPosition (t_x, t_y).y) {
 						//arrive
-						t_targetTransform.position = gameManager.GetWorldPositionFromGridPosition (t_x, t_y);
+						t_targetTransform.position = ((HR_GameManagerScript)gameManager).GetWorldPositionFromGridPosition (t_x, t_y);
 						myMoveList.RemoveAt (i);
 						i--;
 					}
@@ -86,9 +87,21 @@ namespace Hang {
 			}
 		}
 
+		public void StartMoving () {
+			isMoving = true;
+			myMoveCurrentSpeed = myMoveStartSpeed;
+			for (int x = 0; x < gameManager.gridWidth; x++) {
+				for (int y = 0; y < gameManager.gridHeight; y++) {
+					myMoveList.Add (new Vector2 (x, y));
+				}
+			}
+		}
+
 		public bool GetIsMoving () {
 			return isMoving;
 		}
+
+
 	}
 
 

@@ -7,6 +7,17 @@ namespace kitkat
     public class MatchyManagey : MatchManagerScript
     {
 
+        public AudioSource soundy;
+        public AudioClip yay;
+        public TextMesh scoreText;
+
+        public int score = 0;
+
+        void Update()
+        {
+            scoreText.text = "Score: " + score.ToString();
+        }
+
         public bool GridHasVerticalMatch(int x, int y)
         {
             GameObject token1 = gameManager.gridArray[x, y + 0];
@@ -183,7 +194,10 @@ namespace kitkat
                 }
             }
 
+            soundy.PlayOneShot(yay);
+
             //Return the number of tokens which will be removed;
+            score += numRemoved;
             return numRemoved;
         }
     }

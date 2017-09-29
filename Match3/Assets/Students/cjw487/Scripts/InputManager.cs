@@ -4,8 +4,14 @@ namespace Chrs
 {
     public class InputManager : InputManagerScript
     {
-        [SerializeField] protected int MAX_DISTANCE_YOU_CAN_SWAP = 1;
+        [SerializeField] protected int MAX_DISTANCE_YOU_CAN_SWAP;
         protected const int LEFT_MOUSE_BUTTON = 0;
+
+        public override void Start()
+        {
+            base.Start();
+            MAX_DISTANCE_YOU_CAN_SWAP = 1;
+        }
 
         /// <summary>
         /// Uses cursor input to select tokens on the grid.

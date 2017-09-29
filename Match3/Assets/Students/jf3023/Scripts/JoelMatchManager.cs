@@ -131,6 +131,13 @@ public class JoelMatchManager : MatchManagerScript {
                                 token.isInHorizontalMatch = true;
                                 token.horizontalMatchLength = horizonMatchLength;
                             }
+                            else if (tokens.Contains(token) && token.isInVerticalMatch)
+                            {
+                                Debug.Log("Hit");
+
+                                token.isInHorizontalMatch = true;
+                                token.horizontalMatchLength = horizonMatchLength;
+                            }
 
                             Vector2 gridPos = new Vector2(i, y);
 
@@ -159,8 +166,7 @@ public class JoelMatchManager : MatchManagerScript {
                                 token.isInVerticalMatch = true;
                                 token.verticalMatchLength = verticalMatchLength;
                             }
-
-                            if (tokens.Contains(token) && token.isInHorizontalMatch)
+                            else  if (tokens.Contains(token) && token.isInHorizontalMatch)
                             {
                                 Debug.Log("Hit");
 

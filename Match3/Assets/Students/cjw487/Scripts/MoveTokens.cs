@@ -61,6 +61,7 @@ namespace Chrs
                                 movedToken = true;// and changed movedToken to true so that it calls so that it doesn't repopulate
                             }
                         }
+                        break;
                     }
                 }
             }

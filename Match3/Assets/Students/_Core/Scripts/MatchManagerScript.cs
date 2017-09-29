@@ -27,7 +27,7 @@ public class MatchManagerScript : MonoBehaviour {
 	}
 
     //Check if there are 3 matching tokens in Horizontal grid; This method is called in "GridHasMatch()";
-    public bool GridHasHorizontalMatch(int x, int y){
+    public virtual bool GridHasHorizontalMatch(int x, int y){
 		GameObject token1 = gameManager.gridArray[x + 0, y];
 		GameObject token2 = gameManager.gridArray[x + 1, y];
 		GameObject token3 = gameManager.gridArray[x + 2, y];
@@ -50,7 +50,7 @@ public class MatchManagerScript : MonoBehaviour {
     //This method is called in "RemoveMatches()";
     //Return the lenth of matched tokens;
     //(int x, int y) indecate the left most token position in the matched tokens;
-    public int GetHorizontalMatchLength(int x, int y){
+    public virtual int GetHorizontalMatchLength(int x, int y){
 
         //to count the length of match
 		int matchLength = 1;

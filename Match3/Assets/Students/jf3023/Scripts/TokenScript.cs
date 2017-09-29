@@ -14,6 +14,7 @@ namespace joel
         public bool onFire = false;
 
         private Animator animator;
+        private ParticleSystem particleSystem;
 
         private bool isSelected = false;
 
@@ -24,6 +25,7 @@ namespace joel
         void Start()
         {
             animator = GetComponent<Animator>();
+            particleSystem = GetComponent<ParticleSystem>();
         }
 
         // Update is called once per frame
@@ -38,6 +40,15 @@ namespace joel
             else
             {
                 animator.Play("base");
+            }
+
+            if (onFire)
+            {
+                particleSystem.Play();
+            }
+            else if(onFire == false)
+            {
+                particleSystem.Pause();
             }
 
         }
@@ -56,6 +67,7 @@ namespace joel
         {
             if (onFire)
             {
+                Debug.Log("Bonus applied");
                 return ((10 * (horizontalMatchLength - 1) * horizontalMatchLength) + (10 * (verticalMatchLength - 1) * verticalMatchLength)) + onFireBonus;
             }
             else
