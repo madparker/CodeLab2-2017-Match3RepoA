@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class GLMatchManager : MatchManagerScript {
 
+    public static GLMatchManager instance;
+
     private List<Vector2> destroyPositions = new List<Vector2>();
+
+    private void Awake() {
+        instance = this;
+    }
 
     public override bool GridHasMatch() {
         bool _isMatch = false;

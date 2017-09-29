@@ -12,6 +12,11 @@ public class GLInputManager : InputManagerScript {
 
     //Click on a token to to select;
     public override void SelectToken() {
+
+        if (GLGameManager.instance.gameIsOver) {
+            return;
+        }
+
         //On mouse left button clikced to select a token;
         if (Input.GetMouseButtonDown(0)) {
             //Convert mouse position to world point (in position);
