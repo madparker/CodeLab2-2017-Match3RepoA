@@ -1,12 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AndrewMatchManager : MatchManagerScript{
+
+	public Text scoreDisplay;
+	public Text multiplierDisplay;
+	int score;
+	public int comboMultiplier;
 
 	public override void Start()
 	{
 		base.Start ();
+	}
+
+	void Update ()
+	{
+		scoreDisplay.text = score.ToString ();
+		string womboCombo = null;
+		if (comboMultiplier <= 1) {
+			womboCombo = "";
+
+		} else {
+			womboCombo = "x" + comboMultiplier;
+		}
+		multiplierDisplay.text = womboCombo;
 	}
 
 	public override bool GridHasMatch() 
@@ -85,41 +104,83 @@ public class AndrewMatchManager : MatchManagerScript{
 
 	public override int RemoveMatches ()
 	{
+		//Lists of tokens to be removed and thier spaces in the grid that will have to be null'd
+		List<GameObject> tokensToBeRemoved = new List<GameObject> ();
+		List<Vector2> gridPosToNull = new List<Vector2> ();
+
 		int numRemoved = 0;
 
-		for(int x = 0; x < gameManager.gridWidth; x++){
-			for(int y = 0; y < gameManager.gridHeight ; y++){
+		for(int x = 0; x < gameManager.gridWidth; x++)
+		{
+			for(int y = 0; y < gameManager.gridHeight ; y++)
+			{
 
-				if (x < gameManager.gridWidth - 2){
+				if (x < gameManager.gridWidth - 2)
+				{
 
 					int horizonMatchLength = GetHorizontalMatchLength(x, y);
 
-					if(horizonMatchLength > 2){
+					if(horizonMatchLength > 2)
+					{
 
-						for(int i = x; i < x + horizonMatchLength; i++){
+						for(int i = x; i < x + horizonMatchLength; i++)
+						{
 							GameObject token = gameManager.gridArray[i, y]; 
-							Destroy(token);
-							gameManager.gridArray[i, y] = null;
-							numRemoved++;
+							if (!tokensToBeRemoved.Contains (token)) 
+							{
+								tokensToBeRemoved.Add (token); 
+							}
+							Vector2 tokenSpot = new Vector2 (i, y);
+							if (!gridPosToNull.Contains (tokenSpot)) 
+							{
+								gridPosToNull.Add(tokenSpot);
+							}
 						}
 					}
 				}
-				if (y < gameManager.gridHeight - 2){
+				if (y < gameManager.gridHeight - 2)
+				{
 
 					int verticMatchLength = GetVerticalMatchLength(x, y);
 
-					if(verticMatchLength > 2){
+					if(verticMatchLength > 2)
+					{
 
-						for(int i = y; i < y + verticMatchLength; i++){
+						for(int i = y; i < y +verticMatchLength; i++)
+						{
 							GameObject token = gameManager.gridArray[x, i]; 
-							Destroy(token);
-							gameManager.gridArray[x, i] = null;
-							numRemoved++;
+							if (!tokensToBeRemoved.Contains (token)) 
+							{
+								tokensToBeRemoved.Add (token); 
+							}
+							Vector2 tokenSpot = new Vector2 (x, i);
+							if (!gridPosToNull.Contains (tokenSpot)) 
+							{
+								gridPosToNull.Add(tokenSpot);
+							}
 						}
 					}
 				}
 			}
 		}
+
+		foreach (GameObject token in tokensToBeRemoved) 
+		{
+			numRemoved++;
+			score = score + comboMultiplier;
+			Destroy (token);
+			GameObject beautifulNumber = Instantiate(Resources.Load("ajp678_resources/Prefabs/BeautifulNumber")) as GameObject;
+			beautifulNumber.GetComponent<BeautifulNumbers> ().displayNum = comboMultiplier; 
+			beautifulNumber.transform.position = token.transform.position;
+		}
+
+		for (int i = 0; i < gridPosToNull.Count; i++) 
+		{
+			gameManager.gridArray[(int)gridPosToNull[i].x, (int)gridPosToNull[i].y] = null;
+		}
+
+		tokensToBeRemoved.Clear ();
+		gridPosToNull.Clear ();
 
 		//Return the number of tokens which will be removed;
 		return numRemoved;
