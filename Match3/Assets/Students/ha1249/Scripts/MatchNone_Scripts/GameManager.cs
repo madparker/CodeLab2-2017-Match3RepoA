@@ -16,7 +16,6 @@ namespace Hosni{
 
 		MatchManager matchManager;
 		InputManager inputManager;
-		Repopulate repopulateManager;
 		MoveToken moveTokenManager;
 
 		public GameObject grid;
@@ -35,7 +34,6 @@ namespace Hosni{
 
 			matchManager = GetComponent<Hosni.MatchManager>();
 			inputManager = GetComponent<Hosni.InputManager>();
-			repopulateManager = GetComponent<Hosni.Repopulate>();
 			moveTokenManager = GetComponent<Hosni.MoveToken>();
 
 			// Create the slider cursor and hide system cursor
@@ -52,10 +50,9 @@ namespace Hosni{
 
 			MoveCursor ();
 
-//			inputManager.DropToken ();
 
 			if(matchManager.GridHasMatch()){
-				print ("hasMatch");
+
 				matchManager.RemoveMatches();
 			}
 
@@ -64,68 +61,11 @@ namespace Hosni{
 			}
 
 
-
-//
-//			if(!GridHasEmpty()){
-//				if(matchManager.GridHasMatch()){
-//					matchManager.RemoveMatches();
-//				}
-//				else{
-//					inputManager.SelectToken();
-//				}
-//			}
-//			else{
-//				if(!moveTokenManager.move){
-//					moveTokenManager.SetupTokenMove();
-//				}
-//				if(!moveTokenManager.MoveTokensToFillEmptySpaces()){
-//					repopulateManager.AddNewTokensToRepopulateGrid();
-//				}
-//			}
 		}
-
-
-		/// Makes grid based on height and width variables
-
-//		void MakeGrid()
-//		{
-//			grid = new GameObject("TokenGrid");
-//			//  Makes grid based on width and height variables
-//			for(int x = 0; x < gridWidth; x++)
-//			{
-//				for(int y = 0; y < gridHeight; y++)
-//				{
-//					//  Fills in the grid with tokens
-//					AddTokenToPosInGrid(x, y, grid);
-//				}
-//			}
-//		}
-
-
-		/// Checks if there is an empty node in the grid
-
-		/// <returns>True if a node of the grid is empty</returns>
-//		public bool GridHasEmpty()
-//		{
-//			for(int x = 0; x < gridWidth; x++)
-//			{
-//				for(int y = 0; y < gridHeight ; y++)
-//				{
-//					if(gridArray[x, y] == null)
-//					{
-//						return true;
-//					}
-//				}
-//			}
-//
-//			return false;
-//		}
 
 
 		/// Gets the position of the token in the grid
 
-		/// <param name="token">The token we want to find the position of</param>
-		/// <returns>Token's position in the grid in a Vector 2</returns>
 		public Vector2 GetPositionOfTokenInGrid(GameObject token)
 		{
 			for(int x = 0; x < gridWidth; x++)
@@ -146,8 +86,7 @@ namespace Hosni{
 	
 		/// Gets grid position and translate the position into Unity world space
 
-	
-		/// <returns> A Vector2 with the grid position width and height in world space</returns>
+
 		public Vector2 GetWorldPositionFromGridPosition(int x, int y)
 		{
 			return new Vector2(
@@ -160,13 +99,10 @@ namespace Hosni{
 
 		public void AddTokenToPosInGrid(int x, int y, GameObject token, GameObject parent )
 		{
-//			Vector3 position = GetWorldPositionFromGridPosition(x, y);
 
-			//  Gets random token from the tokenType array
-//			GameObject token = Instantiate(tokenTypes[Random.Range(0, tokenTypes.Length)], position, Quaternion.identity) as GameObject;
 			token.transform.parent = parent.transform;
 			gridArray[x, y] = token;
-			print ("grid array " + x + " " + y + " " + gridArray [x, y].name);
+//			Debug.Log ("grid array " + x + " " + y + " " + gridArray [x, y].name);
 		}
 
 		void MoveCursor(){
@@ -196,16 +132,15 @@ namespace Hosni{
 					cursorGridXPos = i;
 					
 				} 
-
 			}
-
 		}
 
+		//Finds an empty position in the column 
 		public int GetEmptyPositioninColumn(int x){
 
 			int yPos = 0;
 
-			for (int i = 0; i < gridHeight - 1; ++i) {
+			for (int i = 0; i < gridHeight; ++i) {
 
 				if (gridArray [x, i] == null) {
 					yPos = i;

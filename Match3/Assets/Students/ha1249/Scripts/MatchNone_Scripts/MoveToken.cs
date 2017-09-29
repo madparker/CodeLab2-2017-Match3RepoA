@@ -52,10 +52,6 @@ namespace Hosni{
 			lerpPercent = 0;
 		}
 
-	
-
-
-
 		//Moves token down if there is an empty space below it (fally tokey)
 		public void MoveTokenToEmptyPos(int startGridX, int startGridY,
 			int endGridX, int endGridY,
@@ -104,10 +100,7 @@ namespace Hosni{
 				}
 			}
 
-			//Sets move to false when lerp is complete (lerpy stoppy).
-//			if(lerpPercent == 1){
-//				move = false;
-//			}
+
 			// Returns true if there is an empty space that needs to be repopulated.
 			return movedToken;
 		}

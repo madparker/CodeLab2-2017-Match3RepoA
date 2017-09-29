@@ -8,6 +8,7 @@ namespace Hosni{
 
 		GameManager gameManager;
 
+
 		void Start() {
 			gameManager = GetComponent<Hosni.GameManager> ();
 		}
@@ -37,14 +38,14 @@ namespace Hosni{
 		public bool GridHasVerticalMatch(int x, int y){
 			GameObject token1 = gameManager.gridArray[x, y+0];
 			GameObject token2 = gameManager.gridArray[x, y+1];
-//			GameObject token3 = gameManager.gridArray[x, y+2];
+
 
 			//Check the token sprite exist;
 			if (token1 != null && token2 != null) {
 				//Get "Sprite Renderer" from each token;
 				SpriteRenderer sr1 = token1.GetComponent<SpriteRenderer>();
 				SpriteRenderer sr2 = token2.GetComponent<SpriteRenderer>();
-//				SpriteRenderer sr3 = token3.GetComponent<SpriteRenderer>();
+
 
 				//Check are these 3 sprite (token using this sprite) are matching;
 				return (sr1.sprite == sr2.sprite );
@@ -58,14 +59,14 @@ namespace Hosni{
 		public bool GridHasHorizontalMatch(int x, int y){
 			GameObject token1 = gameManager.gridArray[x + 0, y];
 			GameObject token2 = gameManager.gridArray[x + 1, y];
-//			GameObject token3 = gameManager.gridArray[x + 2, y];
+
 
 			//Check the token sprite exist;
 			if (token1 != null && token2 != null) {
 				//Get "Sprite Renderer" from each token;
 				SpriteRenderer sr1 = token1.GetComponent<SpriteRenderer>();
 				SpriteRenderer sr2 = token2.GetComponent<SpriteRenderer>();
-//				SpriteRenderer sr3 = token3.GetComponent<SpriteRenderer>();
+
 
 				//Check are these 3 sprite (token using this sprite) are matching;
 				return (sr1.sprite == sr2.sprite );
@@ -157,6 +158,7 @@ namespace Hosni{
 		}
 
 		public int RemoveMatches (){
+
 			int numRemoved = 0;
 
 			//Go through all the grid to check the matched tokens horizontally;
@@ -178,6 +180,7 @@ namespace Hosni{
 							for(int i = x; i < x + horizonMatchLength; i++){
 								//Get the game object of token that will be removed;
 								GameObject token = gameManager.gridArray[i, y]; 
+
 
 								//Destory the game ojbect;
 								Destroy(token);
@@ -206,6 +209,8 @@ namespace Hosni{
 								//Get the game object of token that will be removed;
 								GameObject token = gameManager.gridArray[x, i]; 
 
+
+
 								//Destory the game ojbect;
 								Destroy(token);
 
@@ -219,6 +224,7 @@ namespace Hosni{
 					}
 				}
 			}
+				
 
 			//Return the number of tokens which will be removed;
 			return numRemoved;
