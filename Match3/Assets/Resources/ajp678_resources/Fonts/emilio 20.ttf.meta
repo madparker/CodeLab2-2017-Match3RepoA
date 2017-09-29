@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d9786670f6ce145088890b1f6abcdd4a
+timeCreated: 1506662649
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Emilio 20
+  fontNames:
+  - Emilio 20
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

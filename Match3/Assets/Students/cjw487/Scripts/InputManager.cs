@@ -39,9 +39,9 @@ namespace Chrs
                     else
                     {
                         //  The first selected token position
-                        Vector2 pos1 = gameManager.GetPositionOfTokenInGrid(selected);
+                        Vector2 pos1 = Services.GameManager.GetPositionOfTokenInGrid(selected);
                         //  The current selected token positon
-                        Vector2 pos2 = gameManager.GetPositionOfTokenInGrid(collider.gameObject);
+                        Vector2 pos2 = Services.GameManager.GetPositionOfTokenInGrid(collider.gameObject);
 
                         //  What caused the error:
                         //          Before we were using ONLY the distance formula to determine if a switch was valid.
