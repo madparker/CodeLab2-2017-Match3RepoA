@@ -1,13 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using joel;
 
 public class JoelInputManager : InputManagerScript {
 
-    public override void Start()
-    {
-        base.Start();
-    }
+    private TokenScript tokenController;
 
     public override void SelectToken()
     {
@@ -28,6 +26,8 @@ public class JoelInputManager : InputManagerScript {
                 {
                     //If the first selected token is empty, "selected" stores the current tokan game object;
                     selected = collider.gameObject;
+                    tokenController = selected.GetComponent<TokenScript>();
+                    tokenController.Select();
                 }
                 else
                 {
@@ -45,6 +45,8 @@ public class JoelInputManager : InputManagerScript {
 
                     //Clear the "selected" to null;
                     selected = null;
+                    tokenController.DeSelect();
+                    tokenController = null;
                 }
             }
         }

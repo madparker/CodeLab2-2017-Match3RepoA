@@ -20,7 +20,7 @@ public class GameManagerScript : MonoBehaviour {
 
 	public virtual void Start () {
 		tokenTypes = (Object[])Resources.LoadAll("_Core/Tokens/");
-		gridArray = new GameObject[gridWidth, gridHeight];
+        gridArray = new GameObject[gridWidth, gridHeight];
 		MakeGrid();
 		matchManager = GetComponent<MatchManagerScript>();
 		inputManager = GetComponent<InputManagerScript>();

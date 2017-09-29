@@ -47,7 +47,7 @@ public class InputManagerScript : MonoBehaviour {
 			}
 		}
 
-		Debug.Log ("click");
+		//Debug.Log ("click");
 
 	}
 
