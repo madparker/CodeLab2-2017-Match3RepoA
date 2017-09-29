@@ -140,9 +140,9 @@ namespace Hang {
 		}
 
 		public void MatchAddTime (int g_count) {
+			myGameTimer = myGameTimer + g_count * myMatchTimeGain;
 			if (myGameTimer > myGameTime)
 				myGameTimer = myGameTime;
-			myGameTimer = myGameTimer + g_count * myMatchTimeGain;
 		}
 
 		public bool GetIsEnd () {
