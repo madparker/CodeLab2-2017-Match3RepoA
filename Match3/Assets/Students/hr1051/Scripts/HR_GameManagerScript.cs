@@ -13,7 +13,8 @@ namespace Hang {
 
 		private int myScore = 0;
 
-		[SerializeField] float myGameTime = 60;
+		[SerializeField] float myGameTime = 30;
+		[SerializeField] float myMatchTimeGain = 0.2f;
 		private float myGameTimer;
 
 		private static HR_GameManagerScript instance = null;
@@ -39,10 +40,10 @@ namespace Hang {
 		public override void Start () {
 			gridArray = new GameObject[gridWidth, gridHeight];
 			matchManager = GetComponent<MatchManagerScript>();
+			moveTokenManager = GetComponent<MoveTokensScript>();
 			MakeGrid();
 			inputManager = GetComponent<InputManagerScript>();
 			repopulateManager = GetComponent<RepopulateScript>();
-			moveTokenManager = GetComponent<MoveTokensScript>();
 
 			myBackSpriteRenderer.size = new Vector2 (gridWidth + 0.2f, gridHeight + 0.2f);
 
@@ -79,7 +80,7 @@ namespace Hang {
 			}
 		}
 
-		void MakeGrid () {
+		new void MakeGrid () {
 			grid = new GameObject ("TokenGrid");
 			//  Makes grid based on width and height variables
 			for (int x = 0; x < gridWidth; x++) {
@@ -88,6 +89,8 @@ namespace Hang {
 					AddTokenToPosInGrid (x, y, grid);
 				}
 			}
+
+			((HR_MoveTokensScript)(moveTokenManager)).StartMoving ();
 		}
 
 		public override Vector2 GetWorldPositionFromGridPosition(int x, int y)
@@ -99,7 +102,7 @@ namespace Hang {
 		}
 
 		public new void AddTokenToPosInGrid(int x, int y, GameObject parent) {
-			Vector3 position = GetWorldPositionFromGridPosition (x, y);
+			Vector3 position = GetWorldPositionFromGridPosition (x, y) + gridHeight * Vector2.up;
 
 			int t_num = Random.Range (0, myTokenColors.Length);
 			//  Gets random token from the tokenType array
@@ -128,15 +131,31 @@ namespace Hang {
 			}
 		}
 
-		public void AddScore (int g_score) {
-			myScore += g_score;
+		public void AddScore (int g_count) {
+			myScore += g_count;
 			HR_UI_Play.Instance.ShowScore (myScore);
+
+			MatchAddTime (g_count);
+		}
+
+		public void MatchAddTime (int g_count) {
+			if (myGameTimer > myGameTime)
+				myGameTimer = myGameTime;
+			myGameTimer = myGameTimer + g_count * myMatchTimeGain;
 		}
 
 		public bool GetIsEnd () {
 			if (myGameTimer == 0)
 				return true;
 			return false;
+		}
+
+		public void RegenerateGrid () {
+			foreach (GameObject t_token in gridArray) {
+				Destroy (t_token);
+			}
+
+			MakeGrid ();
 		}
 	}
 }
