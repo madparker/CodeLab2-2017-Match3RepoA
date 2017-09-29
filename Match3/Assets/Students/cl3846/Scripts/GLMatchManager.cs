@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewMatchManager : MatchManagerScript {
+public class GLMatchManager : MatchManagerScript {
 
     private List<Vector2> destroyPositions = new List<Vector2>();
 
